@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>JS Reference VS Copy</title>
+</head>
+
+<body>
+
+  <script>
+    // string、number、boolean、null、undefined、NaN
+    // 基礎型別的值是 call by value 或 call by sharing
+
+    // Array 陣列
+    const players = ['Wes', 'Sarah', 'Ryan', 'Poppy'];
+    // and we want to make a copy of it.
+    // You might think we can just do something like this:
+    // let players2 = players
+    // however what happens when we update that array?
+    // players2[0] = "KaiFu"
+    // now here is the problem!
+    // console.log(players, players2)
+    // oh no - we have edited the original array too! 
+    // 為什麼?因為它只是一個陣列參考，不是陣列的複製，他們同時都對應到同一個陣列
+    // So, how do we fix this? We take a copy instead!
+
+    // 第一種方法
+    // 透過陣列方法產生新陣列，slice()會將切出來的元素放進一個新陣列裡面
+    let players2 = players.slice()
+    players2[0] = 'KaiFu'
+    console.log(players, players2)
+
+    // 第二種方法 
+    // 使用 ES6 解構出元素並放到一個新陣列裡面
+    let players3 = [...players]
+    players3[0] = 'KaiFu'
+    console.log(players, players3)
+
+    // 第三種方法
+    let players4 = [].concat(players)
+    players4[0] = 'KaiFu'
+    console.log(players, players4)
+
+    // 物件
+    function createObj(name) {
+      return {
+        name
+      }
+    }
+
+    let p1 = createObj('KaiFu')
+    let p2 = createObj('AFU')
+    let p3 = createObj('King')
+    let p4 = createObj('Queen')
+
+    let f1 = [p1, p2, p3, p4]
+    let f2 = f1.slice() // 複製一個 [p1,p2,p3,p4]
+    f2[0].name = 'KaiFu_Chang'
+    console.log(f1, f2) // 值是可以改變的，兩者的值都被修改到
+
+    // or create a new array and concat the old one in
+    // or use the new ES6 Spread
+
+    // now when we update it, the original one isn't changed
+
+    // 處理物件也是類似的觀念
+    // with Objects
+    const person = {
+      name: 'Wes Bos',
+      age: 80
+    };
+
+    // and think we make a copy:
+    let p5 = person;
+
+    // case1
+    // person = "xxx"; 
+    // console.log(person, p5) // xxx, {}
+
+    // case2
+    // person.name = "xxx"
+    // console.log(person, p5) // {xxx...},{xxx...}
+
+    // 物件如何複製？
+    // 第一種 Object.assign()
+    let p6 = { name: 'KaiFu', age: 19 }
+    let p7 = { name: 'King' }
+    let p8 = Object.assign(p6, p7)
+    console.log(p8) // 後蓋前，p7會蓋掉p6 {name:'King',age:19}
+
+    // let p6 = Object.assign({}, person)
+
+    // 第二種 最多人使用的物件複製，物件轉字串後再轉物件
+    let p9 = JSON.parse(JSON.stringify(p6))
+    console.log(p9)
+
+  </script>
+
+</body>
+
+</html>
