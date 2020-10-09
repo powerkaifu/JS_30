@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Mouse Shadow</title>
+  <style>
+    html {
+      color: black;
+      font-family: sans-serif;
+    }
+
+    body {
+      margin: 0;
+    }
+
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: black;
+    }
+
+    h1 {
+      text-shadow: 10px 10px 0 rgba(0, 0, 0, 1);
+      font-size: 100px;
+    }
+  </style>
+
+</head>
+
+<body>
+
+  <div class="hero">
+    <h1 contenteditable>🔥WOAH!</h1>
+  </div>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.js'></script>
+  <script>
+    let length = 150
+    let text = document.querySelector('h1')
+    const hero = document.querySelector('.hero')
+    hero.addEventListener('mousemove', function (e) {
+      // No.1 傳統作法
+      // let x = e.offsetX
+      // let y = e.offsetY
+
+      // No.2 ES6 解構
+      let { offsetX, offsetY } = e
+      // e.target 會根據滑鼠移入目標不同而改變
+      console.log(e.target, offsetX, offsetY)
+
+      // 滑鼠移入最深處的目標如果不是 hero 才做，
+      // 計算 h1 的實際位置，
+      // 補上 e.target.offsetLeft、e.target.offsetTop，也就是該容器的座標
+      if (e.target !== this) {
+        offsetX += e.target.offsetLeft
+        offsetY += e.target.offsetTop
+      }
+      // offsetX (h1) / this.offsetWidth(hero 總寬度)
+      let lengthX = Math.floor(offsetX / this.offsetWidth * length) * 2 - length
+      let lengthY = Math.floor(offsetY / this.offsetHeight * length) * 2 - length
+
+      text.style.textShadow = `
+        ${lengthX * -.3}px ${lengthY * -.3}px 5px rgba(0,0,0,0.8),
+        ${lengthX * -.6}px ${lengthY * -.6}px 5px rgba(0,0,0,0.6),
+        ${lengthX * -1}px ${lengthY * -1}px 5px rgba(0,0,0,0.4)
+      `
+    })
+  </script>
+</body>
+
+</html>
