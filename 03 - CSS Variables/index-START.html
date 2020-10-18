@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<title>Scoped CSS Variables and JS</title>
+		<style>
+			/*
+      misc styles, nothing to do with CSS variables
+			*/
+
+			:root {
+				--base: #ffc600;
+				--spacing: 10px;
+				--blur: 10px;
+			}
+
+			body {
+				text-align: center;
+				background: #193549;
+				color: white;
+				font-family: 'helvetica neue', sans-serif;
+				font-weight: 100;
+				font-size: 50px;
+			}
+
+			.controls {
+				margin-bottom: 50px;
+			}
+
+			input {
+				width: 100px;
+			}
+
+			img {
+				padding: var(--spacing);
+				background-color: var(--base);
+				filter: blur(var(--blur));
+			}
+
+			.hl {
+				color: var(--base);
+			}
+		</style>
+	</head>
+
+	<body>
+		<h2>Update CSS Variables with <span class="hl">JS</span></h2>
+
+		<div class="controls">
+			<label for="spacing">Spacing:</label>
+			<input id="spacing" type="range" name="spacing" min="10" max="200" value="10" data-sizing="px" />
+
+			<label for="blur">Blur:</label>
+			<input id="blur" type="range" name="blur" min="0" max="25" value="10" data-sizing="px" />
+
+			<label for="base">Base Color</label>
+			<input id="base" type="color" name="base" value="#ffc600" />
+		</div>
+
+		<img src="https://source.unsplash.com/7bwQXzbF6KE/800x500" />
+
+		<script>
+			function changeHandler() {
+				// this => 觸發事件的元素
+				// console.log(this.name, this.value)
+
+				// switch (this.name) {
+				// 	case 'spacing':
+				// 		document.querySelector('img').style.padding = this.value + 'px'
+				// 		break
+				// 	case 'blur':
+				// 		document.querySelector('img').style.filter = `blur(${this.value}px)`
+				// 		break
+				// 	case 'base':
+				// 		// 用DOM去控制畫面上多個樣式，必須要寫好次
+				// 		document.querySelector('img').style.background = this.value
+				// 		document.querySelector('.hl').style.color = this.value
+				// 		break
+				// }
+
+				// HTML 的自訂義屬性，取得 dataset 資料
+				const unit = this.dataset.sizing || ''
+
+				// 以下三個為取得 html 方式
+				// document.querySelector('html')
+				// document.querySelector(':root')
+				// document.documentElement
+				// 改變 :root css 變數
+				document.documentElement.style.setProperty('--' + this.name, this.value + unit)
+			}
+
+			// querySelectorAll => NodeList 類陣列
+			const inputs = document.querySelectorAll('.controls input')
+			// 一個一個逐一取出
+			inputs.forEach(input => {
+				// change 事件 => 滑鼠放開作用
+				input.addEventListener('change', changeHandler)
+				// mousemove 事件 => 滑鼠移動作用
+				input.addEventListener('mousemove', changeHandler)
+			})
+		</script>
+	</body>
+</html>

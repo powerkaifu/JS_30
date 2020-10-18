@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Console Tricks!</title>
+  </head>
+  <body>
+    <p onClick="makeGreen()">×BREAK×DOWN×</p>
+
+    <script>
+      const dogs = [
+        { name: 'Snickers', age: 2 },
+        { name: 'hugo', age: 8 },
+      ]
+
+      function makeGreen() {
+        const p = document.querySelector('p')
+        p.style.color = '#BADA55'
+        p.style.fontSize = '50px'
+      }
+      // Console 大全 ---------------------------------------------------------------------------
+      // 可以實作封裝成自己的 console.log
+      let console = {
+        isDev: true,
+        log(...args) {
+          if (!this.isDev) return
+          window.console.log(...args)
+        },
+        warn(...args) {
+          if (!this.isDev) return
+          window.console.warn(...args)
+        },
+        error(...args) {
+          if (!this.isDev) return
+          window.console.error(...args)
+        },
+        info(...args) {
+          if (!this.isDev) return
+          window.console.info(...args)
+        },
+        assert(...args) {
+          if (!this.isDev) return
+          window.console.assert(...args)
+        },
+        dir(...args) {
+          if (!this.isDev) return
+          window.console.dir(...args)
+        },
+        table(...args) {
+          if (!this.isDev) return
+          window.console.table(...args)
+        },
+        count(...args) {
+          if (!this.isDev) return
+          window.console.count(...args)
+        },
+        time(...args) {
+          if (!this.isDev) return
+          window.console.time(...args)
+        },
+        timeEnd(...args) {
+          if (!this.isDev) return
+          window.console.timeEnd(...args)
+        },
+      }
+      // Regular
+
+      console.log(123, 456)
+
+      // Interpolated
+
+      // Styled
+      console.log('%c住手', 'font-size:60px;color:Red;')
+      // warning!
+      console.warn('警告')
+
+      // Error :|
+      console.error('錯誤')
+      // Info
+      console.info('好像跟log一樣')
+      // Testing
+      // 前面如果條件沒通過，就會跳出訊息
+      console.assert(false, '訊息')
+      console.assert('', '訊息')
+      console.assert(0, '訊息')
+      console.assert(NaN, '訊息')
+      console.assert(null, '訊息')
+      console.assert(undefined, '訊息')
+
+      // clearing
+      // CTRL + L 清除 console
+
+      // Viewing DOM Elements
+      // 可以列出物件使用的屬性或方法
+      let p = document.querySelector('p')
+      console.dir(p)
+      // Grouping together
+      console.table(dogs) // 列出物件的 table
+      console.table(dogs, ['name']) //也可以篩選物件的屬性
+
+      // counting
+      // 計算列印次數
+      console.count('Wes')
+      console.count('Wes')
+      console.count('Steve')
+      console.count('Steve')
+      console.count('Wes')
+      console.count('Steve')
+      console.count('Wes')
+      console.count('Steve')
+      console.count('Steve')
+      console.count('Steve')
+      console.count('Steve')
+      console.count('Steve')
+
+      // timing
+      console.time('test1')
+      let i
+      let j
+      for (i = 1; i < 10000000; i++) {
+        j = i
+      }
+      console.timeEnd('test1')
+
+      console.time('test2')
+      for (let i = 1; i < 10000000; i++) {
+        let j = i
+      }
+      console.timeEnd('test2')
+    </script>
+  </body>
+</html>

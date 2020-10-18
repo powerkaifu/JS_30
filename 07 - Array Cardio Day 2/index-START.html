@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Array Cardio 💪💪</title>
+  </head>
+  <body>
+    <p><em>Psst: have a look at the JavaScript Console</em> 💁</p>
+    <script>
+      // ## Array Cardio Day 2
+
+      const people = [
+        { name: 'Wes', year: 1988 },
+        { name: 'Kait', year: 1986 },
+        { name: 'Irv', year: 1970 },
+        { name: 'Lux', year: 2015 },
+      ]
+
+      const comments = [
+        { text: 'Love this!', id: 523423 },
+        { text: 'Super good', id: 823423 },
+        { text: 'You are the best', id: 2039842 },
+        { text: 'Ramen is my fav food ever', id: 123523 },
+        { text: 'Nice Nice Nice!', id: 542328 },
+      ]
+
+      // Some and Every Checks
+      // Array.prototype.some() // is at least one person 19 or older?
+      // Array.prototype.every() // is everyone 19 or older?
+
+      // some 其中一個成立回傳 true
+      const ans_some = people.some(p => new Date().getFullYear() - p.year >= 19)
+
+      console.log(ans_some) // true
+
+      // every 每一個成立回傳 true，一個不成立回傳 false
+      const ans_every = people.every(p => new Date().getFullYear() - p.year >= 19)
+      console.log(ans_every) // false
+
+      // Array.prototype.find()
+      // Find is like filter, but instead returns just the one you are looking for
+      // find the comment with the ID of 823423
+      // find 回傳符合條件的第一筆資料，第二筆就不會
+      const ans_find = comments.find(comment => comment.id === 823423)
+      console.log(ans_find)
+
+      // find 適合用在更新資料，找到一筆後更新
+      let cart = [
+        { id: 1, count: 1 },
+        { id: 2, count: 1 },
+        { id: 3, count: 1 },
+        { id: 4, count: 1 },
+      ]
+      const item = cart.find(item => item.id === 3)
+      item.count = 5
+      console.log(cart) // id:3 count 被修改為 5
+
+      // let newCart = cart.slice(0)
+      // newCart.splice(0, 1)
+      // console.log('cart:', cart, 'newCart:', newCart)
+
+      // newCart 是新陣列，與cart是不同陣列，但操作物件資料都是指向同一個，也就是陣列是新的，物件是舊的
+      let newCart = cart.slice(0)
+      console.log(cart === newCart) // false,不同陣列
+      console.log(cart[0] === newCart[0]) // true,相同的物件資料
+
+      // 在未刪除前修改 cart[0] 資料，cart、newCart 都會改變
+      newCart[0].count = 10
+      console.log('cart[0]:', cart[0], 'newCart[0]', newCart[0])
+
+      // 刪除 newCart 第一筆資料
+      newCart.splice(0, 1)
+      //會發現 newCart 少一筆，但 cart 不會被刪除
+      console.log('cart:', cart, 'newCart:', newCart)
+
+      // Array.prototype.findIndex()
+      // Find the comment with this ID
+      // delete the comment with the ID of 823423
+      // findIndex 適合用在刪除資料。
+      const ans_findIndex = comments.findIndex(comment => comment.id === 823423)
+      console.log(ans_findIndex)
+
+      // 陣列操作，slice 與 splice 的使用率很高
+      // splice 會對原始資料做操作，可以新增或刪除元素
+      // const ans_splice = comments.splice(ans_findIndex, 1)
+      // console.log(comments)
+      // slice
+      // const ans_slice1 = comments.slice(0, ans_findIndex)
+      // const ans_slice2 = comments.slice(ans_findIndex + 1)
+      // console.log(ans_slice1, ans_slice2, comments)
+
+      // 用 slice 複製一個新陣列出來
+      const newArray = comments.slice(0)
+      // 再用 splice 刪掉不要的陣列元素
+      newArray.splice(ans_findIndex, 1)
+      console.table(newArray, comments)
+
+      // PS:操作資料不要動到原始資料，複製一份出來再做操作
+      // PS:Object.assign 會複製物件，或是物件轉字串，再轉回物件也會是新的
+      let obj1 = { count: 1 }
+      let obj2 = obj1 // obj1,obj2是指向相同物件
+      let obj3 = Object.assign({}, obj2) // obj3 是新物件，複製 obj2
+      let obj4 = JSON.parse(JSON.stringify(obj3)) // obj4 是新物件，轉字串後再轉回 JSON 物件
+      obj1.count = 5
+      console.log(obj1.count, obj2.count, obj3.count, obj4.count) // 5,5,1,1
+
+      // 使用JSON轉字串再轉物件的方式，複製一個新的陣列包物件，物件資料也不一樣，資料不能有function，只適合純資料
+      let ary = [{ name: 'KaiFu' }, { name: 'Hello' }]
+      let ary1 = JSON.parse(JSON.stringify(ary))
+      console.log(ary[0] === ary1[0])
+
+      // 另一種 map 搭配 Object.assign
+      let ary2 = ary.map(item => {
+        return Object.assign({}, item)
+      })
+    </script>
+  </body>
+</html>

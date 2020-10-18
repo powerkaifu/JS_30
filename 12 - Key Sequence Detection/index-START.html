@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Key Detection</title>
+    <!-- <script type="text/javascript" src="https://www.cornify.com/js/cornify.js"></script> -->
+    <style>
+      .box {
+        width: 300px;
+        height: 300px;
+        background: black;
+        border-radius: 50%;
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="box"></div>
+    <script>
+      // 按鍵序列
+      // 陣列轉字串 toString() 或 join()
+      // 上上下下左右左右BA
+      const secretCode = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65]
+      const input = []
+      window.addEventListener('keyup', function (e) {
+        console.table(e.key, e.keyCode)
+        input.push(e.keyCode)
+        input.splice(0, input.length - secretCode.length)
+
+        if (input.join('|') === secretCode.join('|')) {
+          console.log('Right')
+        }
+      })
+
+      // 可避免使用 for 來處理元素，而改使用 function(遞迴) 或 陣列方法
+      // 陣列取元素 value 方式
+      let a = [1, 2, 3]
+      // 第一種 for 迴圈
+      for (let i = 0; i < a.length; i++) {
+        console.log(a[i])
+      }
+
+      // 第二種 forEach
+      a.forEach(item => {
+        console.log(item)
+      })
+    </script>
+  </body>
+</html>
