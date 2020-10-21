@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Understanding JavaScript's Capture</title>
+  <style>
+    html {
+      box-sizing: border-box;
+    }
+
+    *,
+    *:before,
+    *:after {
+      box-sizing: inherit;
+    }
+
+    div {
+      width: 100%;
+      padding: 100px;
+    }
+
+    .one {
+      background: thistle;
+    }
+
+    .two {
+      background: mistyrose;
+    }
+
+    .three {
+      background: coral;
+    }
+  </style>
+</head>
+
+<body class="bod">
+  <button>Button</button>
+  <div class="one">
+    <div class="two">
+      <div class="three">
+      </div>
+    </div>
+  </div>
+  <ul>
+    <li><a href="#" class="button">Button1</a></li>
+    <li><a href="#" class="button">Button2</a></li>
+    <li><a href="#" class="button">Button3</a></li>
+  </ul>
+  <script>
+    // 第三參數可以使用選項物件，預設是capture:false,once:false
+    // once:true 表示事件只做一次
+    document.querySelector('button').addEventListener('click', function () {
+
+    }, { capture: true, once: false })
+
+    // captrue:false 為氣泡模式，有內而外
+    // capture:true 為捕獲模式，有外而內
+    document.querySelectorAll('div').forEach(dom => {
+      dom.addEventListener('click', function (e) {
+        // stopPropagation() 阻止事件傳遞，但要看capture是true或false從哪邊開始。
+        e.stopPropagation();
+        // path 會回傳最外到最內 或 最內到最外整段路徑
+        console.log(e.path);
+        console.log(this.className)
+      }, { capture: false, once: false })
+    })
+
+    // 事件委派
+    // 點擊外層偵聽者去判斷內層的目標，很適合動態操作DOM的事件，新增、刪除妥善控制範圍內的元素事件
+    document.querySelector('ul').addEventListener('click', function (e) {
+      // e.currentTarget 是綁事件的元素，e.target 是最深處被觸發的目標
+      console.log("e.target", e.target, "e.currentTarget", e.currentTarget);
+
+      // 可利用 path 來查找整段捕獲或氣泡路徑裡面符合條件的元素
+      console.log('查找並回傳是否有 class button', e.path.find(dom => {
+        return dom.classList.contains('button')
+      }));
+      // 檢測是否有 class button
+      console.log(e.target.classList.contains('button'))
+      e.stopPropagation();
+      if (e.target.nodeName === "A") {
+        e.preventDefault()
+        console.log(e.target)
+      }
+    })
+  </script>
+</body>
+
+</html>
