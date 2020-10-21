@@ -60,8 +60,9 @@
       dom.addEventListener('click', function (e) {
         // stopPropagation() 阻止事件傳遞，但要看capture是true或false從哪邊開始。
         e.stopPropagation();
-        // path 會回傳最外到最內 或 最內到最外整段路徑
-        console.log(e.path);
+        // composePath() 會回傳最外到最內 或 最內到最外整段路徑
+        // e.path 不支援 safari、firefox，使用 composePath()
+        console.log(e.composePath());
         console.log(this.className)
       }, { capture: false, once: false })
     })
@@ -72,8 +73,8 @@
       // e.currentTarget 是綁事件的元素，e.target 是最深處被觸發的目標
       console.log("e.target", e.target, "e.currentTarget", e.currentTarget);
 
-      // 可利用 path 來查找整段捕獲或氣泡路徑裡面符合條件的元素
-      console.log('查找並回傳是否有 class button', e.path.find(dom => {
+      // 可利用 composePath() 來查找整段捕獲或氣泡路徑裡面符合條件的元素
+      console.log('查找並回傳是否有 class button', e.composePath().find(dom => {
         return dom.classList.contains('button')
       }));
       // 檢測是否有 class button
