@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Click and Drag</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div class="items">
+    <div class="item item1">01</div>
+    <div class="item item2">02</div>
+    <div class="item item3">03</div>
+    <div class="item item4">04</div>
+    <div class="item item5">05</div>
+    <div class="item item6">06</div>
+    <div class="item item7">07</div>
+    <div class="item item8">08</div>
+    <div class="item item9">09</div>
+    <div class="item item10">10</div>
+    <div class="item item11">11</div>
+    <div class="item item12">12</div>
+    <div class="item item13">13</div>
+    <div class="item item14">14</div>
+    <div class="item item15">15</div>
+    <div class="item item16">16</div>
+    <div class="item item17">17</div>
+    <div class="item item18">18</div>
+    <div class="item item19">19</div>
+    <div class="item item20">20</div>
+    <div class="item item21">21</div>
+    <div class="item item22">22</div>
+    <div class="item item23">23</div>
+    <div class="item item24">24</div>
+    <div class="item item25">25</div>
+  </div>
+
+  <script>
+    // 常使用的事件物件座標如下：
+    // clientX、clientY 取整個 page 
+    // pageX、pageY   取整個 page
+    // offsetX、offsetY 區域座標使用 
+
+    // 拖曳分為開始（mousedown）、正在（mousemove）、結果（mouseup & nouseleave）三個狀態，瀏覽器沒有真正的拖曳事件。
+    // 手機要使用 touchstart、touchend、touchmove
+    const list = document.querySelector('.items');
+    list.addEventListener('mousedown', startDrag); // touchstart
+    list.addEventListener('mousemove', dragHandler); // touchmove
+    list.addEventListener('mouseup', stopDrag); // touchend
+    list.addEventListener('mouseleave', stopDrag);
+    // 紀錄位置
+    let startX = 0;
+    let startScroll = 0;
+    let startTime = 0;
+    function startDrag(e) {
+      // console.log(e);
+      list.classList.add('active');
+      // 紀錄元素起始位置
+      startX = e.pageX;
+      // 紀錄卷軸起始位置
+      startScroll = list.scrollLeft;
+      startTime = new Date().getTime();
+    }
+
+    function stopDrag(e) {
+      list.classList.remove('active');
+      if (new Date().getTime() - startTime <= 500) {
+        if (e.pageX > startX) {
+          console.log('swipe right')
+        } else if (e.pageX < startX) {
+          console.log('swipe left')
+        }
+      }
+    }
+
+    function dragHandler(e) {
+      if (list.classList.contains('active')) {
+        // 拖曳是紀錄相對點的移動 
+        let move = e.pageX - startX;
+        list.scrollLeft = startScroll - move
+      }
+    }
+  </script>
+
+</body>
+
+</html>
